@@ -1,3 +1,5 @@
+import { isBefore } from 'date-fns';
+
 import Sequelize, { Model } from 'sequelize';
 
 class Meetup extends Model {
@@ -8,7 +10,12 @@ class Meetup extends Model {
         description: Sequelize.STRING,
         location: Sequelize.STRING,
         date: Sequelize.DATE,
-        banner_id: Sequelize.INTEGER,
+        past: {
+          type: Sequelize.VIRTUAL,
+          get() {
+            return isBefore(this.date, new Date());
+          },
+        },
       },
       {
         sequelize,
@@ -16,6 +23,11 @@ class Meetup extends Model {
     );
 
     return this;
+  }
+
+  static associate(models) {
+    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
+    this.belongsTo(models.File, { foreignKey: 'banner_id', as: 'banner' });
   }
 }
 
