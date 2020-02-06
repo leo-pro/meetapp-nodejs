@@ -16,7 +16,6 @@ class OrganizationController {
       include: [
         {
           model: File,
-          as: 'banner',
           attributes: ['url'],
         },
       ],

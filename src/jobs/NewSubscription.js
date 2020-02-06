@@ -8,18 +8,26 @@ class NewSubscription {
   }
 
   async handle({ data }) {
-    const { subscriber } = data;
+    const { meetup, user, url } = data;
 
     console.log('A fila executou!');
 
     await Mail.sendMail({
-      to: `${subscriber.name} <${subscriber.email}>`,
-      subject: 'Nova inscrição',
+      to: `${user.name} <${user.email}>`,
+      subject: `Nova inscrição no Meetup ${meetup.title}`,
       template: 'newsubscription',
       context: {
-        date: format(parseISO(subscriber.date), "dd 'de' MMMM', às ' H:mm'h'", {
-          locale: pt,
-        }),
+        userName: user.name,
+        meetupTitle: meetup.title,
+        meetupDescription: meetup.description,
+        meetupBanner: url,
+        meetupDate: format(
+          parseISO(meetup.date),
+          "dd 'de' MMMM', às ' H:mm'h'",
+          {
+            locale: pt,
+          }
+        ),
       },
     });
   }

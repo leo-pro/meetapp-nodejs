@@ -24,19 +24,16 @@ class MeetupController {
       include: [
         {
           model: User,
-          as: 'user',
           attributes: ['id', 'name', 'email', 'avatar_id'],
           include: [
             {
               model: File,
-              as: 'avatar',
               attributes: ['url'],
             },
           ],
         },
         {
           model: File,
-          as: 'banner',
           attributes: ['url'],
         },
       ],
